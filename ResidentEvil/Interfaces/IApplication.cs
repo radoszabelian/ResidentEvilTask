@@ -1,6 +1,6 @@
 ﻿namespace ResidentEvil.Interfaces
 {
-	internal interface IApplication
+	public interface IApplication
 	{
 		void Run();
 	}

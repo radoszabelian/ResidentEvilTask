@@ -1,6 +1,6 @@
 ﻿namespace ResidentEvil.Interfaces
 {
-	internal interface IDisplayable
+	public interface IDisplayable
 	{
 		char DisplayChar { get; }
 		IPosition Position { get; }

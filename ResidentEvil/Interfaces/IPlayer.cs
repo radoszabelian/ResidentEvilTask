@@ -2,7 +2,7 @@
 
 namespace ResidentEvil.Interfaces
 {
-	internal interface IPlayer : ICharacter
+	public interface IPlayer : ICharacter
 	{
 		event Action<IPlayer, IEnemy, DateTime> DeathEvent;
 		event Action<IPlayer, IEnemy, DateTime> HitEvent;

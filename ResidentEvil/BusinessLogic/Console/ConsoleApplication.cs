@@ -3,99 +3,114 @@ using ResidentEvil.BusinessLogic.GameLogic;
 using ResidentEvil.Interfaces;
 using ResidentEvil.Models.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using ColorConsole = Colorful.Console;
 
 namespace ResidentEvil.BusinessLogic.Console
 {
-	internal class ConsoleApplication : IApplication
-	{
-		private readonly IConsoleDrawer _drawer;
-		private readonly ConsoleKeyReader _reader;
-		
-		private readonly Game _game;
+    internal class ConsoleApplication : IApplication
+    {
+        private readonly IConsoleDrawer _drawer;
+        private readonly ConsoleKeyReader _reader;
 
-		private bool quitRequested = false;
+        private readonly Game _game;
 
-		public ConsoleApplication(string fileName, IFactory factory)
-		{
-			var reader = new FileReader(fileName, factory);
-			var stage = reader.DeserializeStage();
+        private bool quitRequested = false;
 
-			_game = new Game(stage);
+        public ConsoleApplication(string fileName, IFactory factory)
+        {
+            var reader = new FileReader(fileName, factory);
 
-			_drawer = new ColorfulConsoleDrawer(stage);
-			_reader = new ConsoleKeyReader();
-		}
+            try
+            {
+                var stage = reader.DeserializeStage();
 
-		public void Run()
-		{
-			while (!quitRequested && !_game.IsOver())
-			{
-				ResetCursor();
-				Draw();
-				StartRound();
-			}
+                _game = new Game(stage);
 
-			EndGame();
-		}
+                _drawer = new ColorfulConsoleDrawer(stage);
+                _reader = new ConsoleKeyReader();
+            }
+            catch (ValidationException e)
+            {
+                System.Console.WriteLine($"There was an error during stage deserialization. Terminating. {e.Message}");
+                Environment.Exit(1);
+            }
+            catch (TooManyZombiesException e)
+            {
+                System.Console.WriteLine($"Too many zombies! The array has overflown! Terminating. {e.Message}");
+                Environment.Exit(1);
+            }
+        }
 
-		private void Draw()
-		{
-			_drawer.DrawStage(_game.Player, _game.Enemies);
-		}
+        public void Run()
+        {
+            while (!quitRequested && !_game.IsOver())
+            {
+                ResetCursor();
+                Draw();
+                StartRound();
+            }
 
-		private void StartRound()
-		{
-			var instruction = _reader.WaitForPlayer();
-			_drawer.CursorToLineStart();
+            EndGame();
+        }
 
-			quitRequested = instruction == Instruction.Quit;
-			if (quitRequested)
-				return;
+        private void Draw()
+        {
+            _drawer.DrawStage(_game.Player, _game.Enemies);
+        }
 
-			_game.Play(instruction);
-		}
+        private void StartRound()
+        {
+            var instruction = _reader.WaitForPlayer();
+            _drawer.CursorToLineStart();
 
-		private void ResetCursor()
-		{
-			_drawer.UpdateCursorPosition();
-		}
+            quitRequested = instruction == Instruction.Quit;
+            if (quitRequested)
+                return;
 
-		private void CheckWin()
-		{
-			if (quitRequested)
-				return;
+            _game.Play(instruction);
+        }
 
-			if (!_game.IsWin())
-				return;
+        private void ResetCursor()
+        {
+            _drawer.UpdateCursorPosition();
+        }
 
-			ColorConsole.WriteLine("");
-			ColorConsole.WriteWithGradient("Congrats you won!", Color.Yellow, Color.Fuchsia, 60);
-			ColorConsole.WriteLine("");
+        private void CheckWin()
+        {
+            if (quitRequested)
+                return;
 
-		}
+            if (!_game.IsWin())
+                return;
 
-		private void EndGame()
-		{
-			Draw();
-			CheckWin();
+            ColorConsole.WriteLine("");
+            ColorConsole.WriteWithGradient("Congrats you won!", Color.Yellow, Color.Fuchsia, 60);
+            ColorConsole.WriteLine("");
 
-			ColorConsole.ResetColor();
-			WaitForEnter();
-		}
+        }
 
-		private void WaitForEnter()
-		{
-			ColorConsole.WriteLine("\n\n");
-			ColorConsole.WriteLine("Press Enter to close the application!");
+        private void EndGame()
+        {
+            Draw();
+            CheckWin();
 
-			ConsoleKeyInfo keyInfo;
+            ColorConsole.ResetColor();
+            WaitForEnter();
+        }
 
-			do
-			{
-				keyInfo = System.Console.ReadKey();
-			} while (keyInfo.Key != ConsoleKey.Enter);
-		}
-	}
+        private void WaitForEnter()
+        {
+            ColorConsole.WriteLine("\n\n");
+            ColorConsole.WriteLine("Press Enter to close the application!");
+
+            ConsoleKeyInfo keyInfo;
+
+            do
+            {
+                keyInfo = System.Console.ReadKey();
+            } while (keyInfo.Key != ConsoleKey.Enter);
+        }
+    }
 }

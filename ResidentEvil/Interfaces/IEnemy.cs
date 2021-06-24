@@ -2,7 +2,7 @@
 
 namespace ResidentEvil.Interfaces
 {
-	internal interface IEnemy : ICharacter
+	public interface IEnemy : ICharacter
 	{
 		event Action<IEnemy, DateTime> DeathEvent;
 
