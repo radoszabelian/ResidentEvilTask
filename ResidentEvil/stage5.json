@@ -1,0 +1,46 @@
+{
+    "stage": {
+        "width": 50,
+        "height": 20,
+        "hasBorders": false,
+        "enemyCount": 2
+    },
+    "player": {
+        "name": "Viktoria",
+        "position": {
+            "x": 10,
+            "y": 10
+        },
+        "health": 100,
+        "damage": 25
+    },
+    "enemies": [
+        {
+            "type": "runningZombie",
+            "position": {
+                "x": 18,
+                "y": 18
+            },
+            "health": 40,
+            "stamina": 2
+        },
+        {
+          "type": "tyrant",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "health": 60,
+          "damage": 8
+        },
+        {
+          "type": "nemesis",
+          "position": {
+            "x": 19,
+            "y": 18
+          },
+          "health": 60,
+          "damage": 8
+        }
+    ]
+}
