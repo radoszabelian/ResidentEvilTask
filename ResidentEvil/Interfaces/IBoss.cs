@@ -1,6 +1,6 @@
 ﻿namespace ResidentEvil.Interfaces
 {
-	internal interface IBoss : IEnemy
+	public interface IBoss : IEnemy
 	{
 		void Regenerate();
 	}

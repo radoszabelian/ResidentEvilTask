@@ -1,6 +1,6 @@
 ﻿namespace ResidentEvil.Interfaces
 {
-	internal interface IFactory
+	public interface IFactory
 	{
 		IPlayer CreatePlayer(string name, int health, int damage, IPosition position);
 		IEnemy CreateRunningZombie(int health, int stamina, IPosition position);
