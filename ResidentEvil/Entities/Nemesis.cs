@@ -20,5 +20,11 @@ namespace ResidentEvil.Entities
         {
             health++;
         }
+
+        public override void Attack(IPlayer player)
+        {
+            base.Attack(player);
+            Regenerate();
+        }
     }
 }

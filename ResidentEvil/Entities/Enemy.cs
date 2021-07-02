@@ -52,7 +52,7 @@ namespace ResidentEvil.Entities
 
                 if (health == 0)
                 {
-                    DeathEvent(this, DateTime.Now);
+                    DeathEvent?.Invoke(this, DateTime.Now);
                 }
             }
         }

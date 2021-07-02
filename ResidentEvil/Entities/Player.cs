@@ -48,7 +48,7 @@ namespace ResidentEvil.Entities
             {
                 health = Health - enemy.Damage < 0 ? 0 : Health - enemy.Damage;
 
-                HitEvent(this, enemy, DateTime.Now);
+                HitEvent?.Invoke(this, enemy, DateTime.Now);
 
                 if (Health == 0)
                 {

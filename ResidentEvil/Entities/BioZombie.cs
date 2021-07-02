@@ -11,7 +11,7 @@ namespace ResidentEvil.Entities
 
         public BioZombie(IPosition _position, int _health, float _radiation) : base(_position, _health)
         {
-            radiation = _radiation;
+            Radiation = _radiation;
         }
 
         public float Radiation
